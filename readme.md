@@ -2,6 +2,8 @@
 
 ## A customizable chess like browser game<br><br>
 
+![Game Progress](images/progress/July-01-2021.png)
+
 ### "Coding Standard"
 
 Do:  
