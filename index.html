@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <style>
+            html body {
+                margin: 0px;
+                padding: 0px;
+            }
+
+            #board {
+                text-align: center;
+                font-size: 10vh;
+                font-family: "Courier New";
+            }
+
+            #board > span {
+              -webkit-touch-callout: none; /* iOS Safari */
+                -webkit-user-select: none; /* Safari */
+                 -khtml-user-select: none; /* Konqueror HTML */
+                   -moz-user-select: none; /* Old versions of Firefox */
+                    -ms-user-select: none; /* Internet Explorer/Edge */
+                        user-select: none; /* Non-prefixed version, currently
+                                                  supported by Chrome, Edge, Opera and Firefox */
+                text-transform: uppercase;
+            }
+
+            #board > span:hover {
+                cursor: pointer;
+                background: #f8f8f8;
+            }
+
+            #board > span:active {
+                cursor: pointer;
+                color: purple;
+            }
+
+            .selected {
+                font-weight: bold;
+                color: blue !important;
+            }
+            
+            .pinkTeam {
+                color: pink; 
+            }
+
+            .greenTeam {
+                color: green; 
+            }
+
+            #debugger {
+                height: 100vh;
+                overflow-y: auto;
+                width: 30%;
+                background: #f8f8f8;
+                float: right;
+            }
+
+            #debugger > p:last-child {
+                font-weight: bold; 
+                color: blue;
+            }
+
+            #debugger > p {
+                padding-left: 1rem;
+            }
+
+           
+            #turn {
+                position: absolute;
+                top: 0px;
+                text-transform: capitalize;
+            }
+
+        </style>
+    </head>
+    <body>
+
+        <h1 id="turn">PinkTeam</h1>
+
+        <div id="debugger"> 
+            <h2> Debugger </h2>
+            <hr>
+        </div>
+
+        <div id="board"></div>
+
+        <script src="game.js"></script>
+    </body>
+</html>
