@@ -7,6 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Battle Game</title>
     <style>
+        :root {
+            --team1-color: pink;
+            --team2-color: green;
+            --current-team-move: pink;
+        }
+
+
         html body {
             margin: 0px;
             padding: 0px;
@@ -19,7 +26,10 @@
             align-items: center;
             height: 90vh;
             transition: box-shadow 0.15s;
+            box-shadow: inset 0px 0px 65px 0px var(--current-team-move);
+            -mox-box-shadow: inset 0px 0px 65px 0px var(--current-team-move);
         }
+
 
         #board {
             text-align: center;
@@ -51,8 +61,7 @@
             display: inline-block;
             height: 75px;
             margin: 0;
-            /*  color: transparent;*/
-
+            transition: transform 0.2s;
         }
 
         #board>span:hover {
@@ -68,17 +77,15 @@
 
         .selected {
             font-weight: bold;
-            color: blue !important;
+            transform: scaleX(1.05) scaleY(1.05);
         }
 
-        .pinkTeam {
-            color: pink;
-            background: transparent;
+        .team1 {
+            color: var(--team1-color);
         }
 
-        .greenTeam {
-            color: green;
-            background: transparent;
+        .team2 {
+            color: var(--team2-color);
         }
 
         .shaded {
@@ -134,7 +141,7 @@
         <h2> Debugger </h2>
     </div>
 
-    <div id="board-container" style="box-shadow: inset 0px 0px 65px 0px pink;">
+    <div id="board-container">
         <div id="board"></div>
     </div>
     <script src="game.js"></script>
