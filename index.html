@@ -1,93 +1,132 @@
 <!doctype html>
 <html>
-    <head>
-        <!-- Required meta tags -->
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-        <style>
-            html body {
-                margin: 0px;
-                padding: 0px;
-            }
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-            #board {
-                text-align: center;
-                font-size: 10vh;
-                font-family: "Courier New";
-            }
+    <style>
+        html body {
+            margin: 0px;
+            padding: 0px;
+        }
 
-            #board > span {
-              -webkit-touch-callout: none; /* iOS Safari */
-                -webkit-user-select: none; /* Safari */
-                 -khtml-user-select: none; /* Konqueror HTML */
-                   -moz-user-select: none; /* Old versions of Firefox */
-                    -ms-user-select: none; /* Internet Explorer/Edge */
-                        user-select: none; /* Non-prefixed version, currently
+        #board-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 90vh;
+        }
+
+        #board {
+            text-align: center;
+            font-size: 7vh;
+            font-family: "Courier New";
+        }
+
+        #board>span {
+            -webkit-touch-callout: none;
+            /* iOS Safari */
+            -webkit-user-select: none;
+            /* Safari */
+            -khtml-user-select: none;
+            /* Konqueror HTML */
+            -moz-user-select: none;
+            /* Old versions of Firefox */
+            -ms-user-select: none;
+            /* Internet Explorer/Edge */
+            user-select: none;
+            /* Non-prefixed version, currently
                                                   supported by Chrome, Edge, Opera and Firefox */
-                text-transform: uppercase;
-            }
+            text-transform: uppercase;
+            border: 1px dashed #80808047;
+            width: 75px;
+            display: inline-block;
+            height: 75px;
+            margin: 0;
+            color: transparent;
+        }
 
-            #board > span:hover {
-                cursor: pointer;
-                background: #f8f8f8;
-            }
+        #board>span:hover {
+            cursor: pointer;
+            background: #fffbd1;
+            border: 1px solid #ffd025;
+        }
 
-            #board > span:active {
-                cursor: pointer;
-                color: purple;
-            }
+        #board>span:active {
+            cursor: pointer;
+            color: purple;
+        }
 
-            .selected {
-                font-weight: bold;
-                color: blue !important;
-            }
-            
-            .pinkTeam {
-                color: pink; 
-            }
+        .selected {
+            font-weight: bold;
+            color: blue !important;
+        }
 
-            .greenTeam {
-                color: green; 
-            }
+        .pinkTeam {
+            color: pink !important;
+        }
 
-            #debugger {
-                height: 100vh;
-                overflow-y: auto;
-                width: 30%;
-                background: #f8f8f8;
-                float: right;
-            }
+        .greenTeam {
+            color: green !important;
+        }
 
-            #debugger > p:last-child {
-                font-weight: bold; 
-                color: blue;
-            }
+        .shaded {
+            background: rgba(190, 190, 190, 0.199);
+        }
 
-            #debugger > p {
-                padding-left: 1rem;
-            }
+        #debugger {
+            height: 100vh;
+            overflow-y: auto;
+            width: 30%;
+            background: #f8f8f8;
+            float: right;
+        }
 
-           
-            #turn {
-                position: absolute;
-                top: 0px;
-                text-transform: capitalize;
-            }
+        #debugger h2 {
+            padding-left: 20px;
+            position: sticky;
+            top: 0;
+            background: #f8f8f8;
+            height: 60px;
+            vertical-align: middle;
+            border-bottom: 1px solid grey;
+            padding-top: 20px;
+            margin: 0;
+        }
 
-        </style>
-    </head>
-    <body>
 
-        <h1 id="turn">PinkTeam</h1>
+        #debugger>p:last-child {
+            font-weight: bold;
+            color: blue;
+        }
 
-        <div id="debugger"> 
-            <h2> Debugger </h2>
-            <hr>
-        </div>
+        #debugger>p {
+            padding-left: 1rem;
+        }
 
+
+        #turn {
+            position: absolute;
+            top: 0px;
+            text-transform: capitalize;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1 id="turn">PinkTeam</h1>
+
+    <div id="debugger">
+        <h2> Debugger </h2>
+    </div>
+
+    <div id="board-container" style="border: 5px solid pink;">
         <div id="board"></div>
+    </div>
+    <script src="game.js"></script>
+</body>
 
-        <script src="game.js"></script>
-    </body>
 </html>

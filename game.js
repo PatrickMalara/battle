@@ -17,6 +17,7 @@ let gTurn = "pinkTeam";
 
 // UI DOM Elements
 let board  = document.getElementById("board");
+let boardContainer  = document.getElementById("board-container");
 let debug  = document.getElementById("debugger");
 let turnUI = document.getElementById("turn");
 
@@ -68,6 +69,7 @@ const move = function( coord ) {
         const selectedPieceEl       = board.childNodes[ gSelectedPiece.y * (width+offset) + gSelectedPiece.x ];
 
         clickedPieceEl.innerHTML    = gSelectedPiece.piece;
+        clickedPieceEl.classList = "";
         clickedPieceEl.classList.add( gSelectedPiece.team );
 
         selectedPieceEl.innerHTML   = ".";
@@ -81,6 +83,10 @@ const move = function( coord ) {
 
         gTurn = gSelectedPiece.team === "greenTeam" ? "pinkTeam" : "greenTeam";
         debug.innerHTML += "<p> Turn: " + gTurn + "</p>";
+        debug.scrollTo(0,debug.scrollHeight);
+
+        boardContainer.style.border = "5px solid " + (gTurn === "greenTeam" ? "green" : "pink");
+
         turn.innerHTML = gTurn;
         gSelectedPiece = undefined;
 
@@ -116,6 +122,10 @@ function boardClicked(event) {
             piece.innerHTML = currentCharInB; 
 
             piece.id = ( x ).toString() + "-" + ( y ).toString();
+
+            if((x+y) % 2 === 0){
+                piece.classList.add("shaded");
+            }
 
             if ( pieces.includes(currentCharInB) ) {
                 piece.classList.add("greenTeam"); // Capitals are in Green Team
