@@ -1,5 +1,5 @@
 /**
- * So our board is 10 by 10, this is determined by the **width** const
+ * So our board is 8 by 8, this is determined by the **width** and **height** consts
  * */
 
 const b = `RHBQKBHRPPPPPPPP................................pppppppprhbkqbhr`;
@@ -13,10 +13,23 @@ const width = 8;
 const height = 8;
 const offset = 1; // This is because there is a <br> that we create for the UI board
 
+const team1 = {
+    name: "Team 1",
+    class: "team1",
+    color: "red"
+}
+
+const team2 = {
+    name: "Team 2",
+    class: "team2",
+    color: "blue"
+}
+
 let gSelectedPiece = undefined;
-let gTurn = "pinkTeam";
+let gTurn = team1;
 
 // UI DOM Elements
+let root = document.querySelector(":root");
 let board = document.getElementById("board");
 let boardContainer = document.getElementById("board-container");
 let debug = document.getElementById("debugger");
@@ -41,7 +54,7 @@ const move = function (coord) {
         if (bArray[coord.y * width + coord.x] !== '.') {
 
             const currentlyClickedPiece = board.childNodes[coord.y * (width + offset) + coord.x];
-            if ((currentlyClickedPiece.classList.contains("greenTeam") ? "greenTeam" : "pinkTeam") !== gTurn) {
+            if ((currentlyClickedPiece.classList.contains("team2") ? "team2" : "team1") !== gTurn.class) {
                 return;
             }
 
@@ -49,7 +62,7 @@ const move = function (coord) {
                 piece: bArray[coord.y * width + coord.x],
                 x: coord.x,
                 y: coord.y,
-                team: currentlyClickedPiece.classList.contains("greenTeam") ? "greenTeam" : "pinkTeam"
+                team: currentlyClickedPiece.classList.contains("team2") ? team2 : team1
             };
 
             currentlyClickedPiece.classList.add("selected");
@@ -64,37 +77,36 @@ const move = function (coord) {
         const selectedPieceEl = board.childNodes[gSelectedPiece.y * (width + offset) + gSelectedPiece.x];
 
         // Make sure the user cant move on itself.... :(   | unless we want to add the ability for a character to consumer its teammate for power? "THONK!?"
-        if ((coord.x === gSelectedPiece.x && coord.y === gSelectedPiece.y) || clickedPieceEl.classList.contains(gSelectedPiece.team) === true) {
+        if ((coord.x === gSelectedPiece.x && coord.y === gSelectedPiece.y) || clickedPieceEl.classList.contains(gSelectedPiece.team.class) === true) {
             deselectPiece();
             return;
         }
 
 
         clickedPieceEl.innerHTML = gSelectedPiece.piece;
-        clickedPieceEl.classList.remove("pinkTeam");
-        clickedPieceEl.classList.remove("greenTeam");
+        clickedPieceEl.classList.remove("team1");
+        clickedPieceEl.classList.remove("team2");
         clickedPieceEl.classList.remove("emptyCell");
-        clickedPieceEl.classList.add(gSelectedPiece.team);
+        clickedPieceEl.classList.add(gSelectedPiece.team.class);
 
         selectedPieceEl.innerHTML = ".";
         selectedPieceEl.classList.add("emptyCell");
         selectedPieceEl.classList.remove("selected");
-        selectedPieceEl.classList.remove(gSelectedPiece.team);
+        selectedPieceEl.classList.remove(gSelectedPiece.team.class);
 
 
         // Update OUR board > "b"
         bArray[coord.y * width + coord.x] = gSelectedPiece.piece;
         bArray[gSelectedPiece.y * width + gSelectedPiece.x] = ".";
 
-        gTurn = gSelectedPiece.team === "greenTeam" ? "pinkTeam" : "greenTeam";
-        debug.innerHTML += "<p> Turn: " + gTurn + "</p>";
+        gTurn = gSelectedPiece.team === team2 ? team1 : team2;
+        debug.innerHTML += "<p> Turn: " + gTurn.name + "</p>";
         debug.scrollTo(0, debug.scrollHeight);
 
-        boardContainer.style.boxShadow = "inset 0px 0px 65px 0px " + (gTurn === "greenTeam" ? "green" : "pink");
+        root.style.setProperty('--current-team-move', (gTurn === team2 ? team2.color : team1.color));
 
-        turn.innerHTML = gTurn;
+        turn.innerHTML = gTurn.name;
         gSelectedPiece = undefined;
-
 
     }
 
@@ -127,6 +139,10 @@ function boardClicked(event) {
 
 (function main() {
 
+    root.style.setProperty('--team1-color', team1.color);
+    root.style.setProperty('--team2-color', team2.color);
+    root.style.setProperty('--current-team-move', team1.color);
+
 
     for (let y = 0; y < height; y += 1) {
         for (let x = 0; x < width; x += 1) {
@@ -150,11 +166,11 @@ function boardClicked(event) {
             }
 
             if (pieces.includes(currentCharInB)) {
-                piece.classList.add("greenTeam"); // Capitals are in Green Team
+                piece.classList.add("team2"); // Capitals are in Green Team
                 console.log("Includes Capital")
 
             } else if (pieces.includes(currentCharInB.toUpperCase()) && currentCharInB == currentCharInB.toLowerCase()) {
-                piece.classList.add("pinkTeam"); // Lowercase are in Pink Team
+                piece.classList.add("team1"); // Lowercase are in Pink Team
                 console.log("Includes Lowercase")
 
             }
