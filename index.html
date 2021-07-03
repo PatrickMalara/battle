@@ -5,24 +5,30 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+    <title>Battle Game</title>
     <style>
         html body {
             margin: 0px;
             padding: 0px;
         }
 
+
         #board-container {
             display: flex;
             justify-content: center;
             align-items: center;
             height: 90vh;
+            transition: box-shadow 0.15s;
         }
 
         #board {
             text-align: center;
             font-size: 7vh;
             font-family: "Courier New";
+        }
+
+        .emptyCell {
+            color: transparent !important;
         }
 
         #board>span {
@@ -45,7 +51,8 @@
             display: inline-block;
             height: 75px;
             margin: 0;
-            color: transparent;
+            /*  color: transparent;*/
+
         }
 
         #board>span:hover {
@@ -65,11 +72,13 @@
         }
 
         .pinkTeam {
-            color: pink !important;
+            color: pink;
+            background: transparent;
         }
 
         .greenTeam {
-            color: green !important;
+            color: green;
+            background: transparent;
         }
 
         .shaded {
@@ -96,16 +105,18 @@
             margin: 0;
         }
 
-
         #debugger>p:last-child {
             font-weight: bold;
             color: blue;
         }
 
         #debugger>p {
-            padding-left: 1rem;
+            padding-left: 2rem;
         }
 
+        #debugger>pre {
+            padding-left: 1rem;
+        }
 
         #turn {
             position: absolute;
@@ -123,7 +134,7 @@
         <h2> Debugger </h2>
     </div>
 
-    <div id="board-container" style="border: 5px solid pink;">
+    <div id="board-container" style="box-shadow: inset 0px 0px 65px 0px pink;">
         <div id="board"></div>
     </div>
     <script src="game.js"></script>
