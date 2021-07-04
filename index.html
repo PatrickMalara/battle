@@ -11,6 +11,9 @@
             --team1-color: pink;
             --team2-color: green;
             --current-team-move: pink;
+            --move-anim-time: 0.2s;
+            --animX: 0px;
+            --animY: 0px;
         }
 
 
@@ -19,6 +22,10 @@
             padding: 0px;
         }
 
+        .hidden {
+            opacity: 0 !important;
+            z-index: -100;
+        }
 
         #board-container {
             display: flex;
@@ -27,7 +34,7 @@
             height: 90vh;
             transition: box-shadow 0.15s;
             box-shadow: inset 0px 0px 65px 0px var(--current-team-move);
-            -mox-box-shadow: inset 0px 0px 65px 0px var(--current-team-move);
+            -moz-box-shadow: inset 0px 0px 65px 0px var(--current-team-move);
         }
 
 
@@ -77,7 +84,6 @@
 
         .selected {
             font-weight: bold;
-            transform: scaleX(1.05) scaleY(1.05);
         }
 
         .team1 {
@@ -130,6 +136,21 @@
             top: 0px;
             text-transform: capitalize;
         }
+
+        #animator {
+            width: 75px;
+            height: 75px;
+            display: block;
+            position: absolute;
+            top: var(--animY);
+            left: var(--animX);
+            transition: top var(--move-anim-time), left var(--move-anim-time);
+            text-transform: uppercase;
+            margin: 0;
+            text-align: center;
+            font-size: 7vh;
+            font-family: "Courier New";
+        }
     </style>
 </head>
 
@@ -144,6 +165,9 @@
     <div id="board-container">
         <div id="board"></div>
     </div>
+
+    <span id="animator" class="hidden"></span>
+
     <script src="game.js"></script>
 </body>
 
