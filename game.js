@@ -13,16 +13,17 @@ const width = 8;
 const height = 8;
 const offset = 1; // This is because there is a <br> that we create for the UI board
 
+
 const team1 = {
     name: "Team 1",
     class: "team1",
-    color: "red"
+    color: "purple"
 }
 
 const team2 = {
     name: "Team 2",
     class: "team2",
-    color: "blue"
+    color: "green"
 }
 
 let gSelectedPiece = undefined;
@@ -32,11 +33,10 @@ let gTurn = team1;
 let root = document.querySelector(":root");
 let board = document.getElementById("board");
 let boardContainer = document.getElementById("board-container");
+let animator = document.getElementById("animator");
 let debug = document.getElementById("debugger");
 let turnUI = document.getElementById("turn");
 
-
-//board.addEventListener("click", boardClicked);
 window.addEventListener("click", boardClicked);
 
 /**
@@ -69,6 +69,10 @@ const move = function (coord) {
 
             debug.innerHTML += "<pre> Selected Piece: " + JSON.stringify(gSelectedPiece, null, 4) + "</pre>";
 
+            //move the animator to the clicked cell
+            const goFromPos = getElementPosition(currentlyClickedPiece);
+            root.style.setProperty('--animX', goFromPos.x + "px");
+            root.style.setProperty('--animY', goFromPos.y + "px");
         }
 
     } else {
@@ -82,17 +86,35 @@ const move = function (coord) {
             return;
         }
 
+        //show the animator and make it mimic the peice that is moving
+        const goToPos = getElementPosition(clickedPieceEl);
+        animator.classList.remove("hidden");
+        animator.innerHTML = gSelectedPiece.piece;
+        animator.classList.add(gSelectedPiece.team.class);
 
-        clickedPieceEl.innerHTML = gSelectedPiece.piece;
-        clickedPieceEl.classList.remove("team1");
-        clickedPieceEl.classList.remove("team2");
-        clickedPieceEl.classList.remove("emptyCell");
-        clickedPieceEl.classList.add(gSelectedPiece.team.class);
+        //move the animator
+        root.style.setProperty('--animX', goToPos.x + "px");
+        root.style.setProperty('--animY', goToPos.y + "px");
 
+        //clear the cell that was selected
         selectedPieceEl.innerHTML = ".";
         selectedPieceEl.classList.add("emptyCell");
         selectedPieceEl.classList.remove("selected");
         selectedPieceEl.classList.remove(gSelectedPiece.team.class);
+
+        const piece = gSelectedPiece;//for use within the timeout function
+
+        //after the animation is done, hide the animator, and populate the cell with the right piece and color
+        setTimeout(function () {
+            animator.classList.add("hidden");
+            animator.innerHTML = "";
+
+            clickedPieceEl.innerHTML = piece.piece;
+            clickedPieceEl.classList.remove("team1");
+            clickedPieceEl.classList.remove("team2");
+            clickedPieceEl.classList.remove("emptyCell");
+            clickedPieceEl.classList.add(piece.team.class);
+        }, 200);
 
 
         // Update OUR board > "b"
@@ -116,6 +138,13 @@ function deselectPiece() {
     const selectedPieceEl = board.childNodes[gSelectedPiece.y * (width + offset) + gSelectedPiece.x];
     selectedPieceEl.classList.remove("selected");
     gSelectedPiece = undefined;
+}
+
+function getElementPosition(el) {
+    var rect = el.getBoundingClientRect(),
+        scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
+        scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    return { x: rect.left + scrollLeft, y: rect.top + scrollTop }
 }
 
 
@@ -142,7 +171,7 @@ function boardClicked(event) {
     root.style.setProperty('--team1-color', team1.color);
     root.style.setProperty('--team2-color', team2.color);
     root.style.setProperty('--current-team-move', team1.color);
-
+    turnUI.innerHTML = team1.name;
 
     for (let y = 0; y < height; y += 1) {
         for (let x = 0; x < width; x += 1) {
