@@ -117,6 +117,16 @@ class Piece {
         this.initHealthBar(obj.healthBar);
     }
 
+    updateTypeRules(type) {
+        this.move = type.move;
+        this.moveDirecions = type.moveDirecions;
+        this.swiftness = type.swiftness;
+        this.maxHealth = type.maxHealth;
+        this.health = type.health;
+        this.attack = type.attack;
+        this.range = type.range;
+    }
+
     initHealthBar(hb) {
         this.healthBar = new HealthBar(hb);
     }
@@ -168,8 +178,8 @@ const tank = {
 
 const archer = {
     typeName: "archer",
-    move: 2,
-    moveDirecions: { forward: true, back: true, horizontal: true, vertical: true, diagonal: false, freeWalk: false },
+    move: 5,
+    moveDirecions: { forward: true, back: true, horizontal: true, vertical: true, diagonal: true, freeWalk: false },
     swiftness: 0.5,
     maxHealth: 3,
     health: 3,
@@ -350,6 +360,13 @@ function attack(attacker, defender) {
     return "survived";
 }
 
+function stateIfAttacked(attacker, defender) {
+    if (defender.health - attacker.attack <= 0) {
+        return "dead";
+    }
+    return "alive";
+}
+
 function removePieceAt(coord) {
     for (let i = 0; i < pieces.length; i++) {
         if (pieces[i].coord.x === coord.x && pieces[i].coord.y === coord.y) {
@@ -376,6 +393,8 @@ function clearLegalMoves() {
     for (let x = 0; x < width; x++) {
         for (let y = 0; y < height; y++) {
             board.childNodes[y * (width + offset) + x].classList.remove("legal-move");
+            board.childNodes[y * (width + offset) + x].classList.remove("legal-move-attack");
+            board.childNodes[y * (width + offset) + x].classList.remove("legal-move-kill");
         }
     }
 }
@@ -391,13 +410,23 @@ function checkLegalMove(piece, coord, step, first = false) {
     let pieceAtCoord = getPieceAt(coord);
     let directions = piece.moveDirecions;
 
-    if (cell === undefined || pieceAtCoord === -1) {
+    if (cell === undefined || pieceAtCoord === -1/* || cell.classList.contains("legal-move") === true*/) {
         return;
     }
     if (first === true || (step > 0 && (pieceAtCoord === undefined || pieceAtCoord.team.class !== piece.team.class))) {
         try {
             if (first !== true) {
+
                 cell.classList.add("legal-move");
+                if (pieceAtCoord !== undefined) {
+                    if (stateIfAttacked(piece, pieceAtCoord) === "dead") {
+                        cell.classList.add("legal-move-kill");
+                    }
+                    else {
+                        cell.classList.add("legal-move-attack");
+                    }
+                }
+
             }
             else {
                 step++;
@@ -471,7 +500,6 @@ function boardClicked(event) {
 
 
 function setPlayerTurn(team) {
-
     root.style.setProperty('--current-team-move', team.color);
     turnUI.innerHTML = team.name;
     gTurn = team.class == 'team1' ? team1 : team2;
@@ -547,7 +575,17 @@ function setPlayerTurn(team) {
                 p.setHealthBar(piece.childNodes[1]);
                 piece.classList.add(p.team.class);
                 bArray[(y * width) + x] = p;
-
+                switch (p.type) {
+                    case "rogue":
+                        p.updateTypeRules(rogue);
+                        break;
+                    case "tank":
+                        p.updateTypeRules(tank);
+                        break;
+                    case "archer":
+                        p.updateTypeRules(archer);
+                        break;
+                }
             }
 
 

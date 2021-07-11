@@ -183,6 +183,14 @@
             background: #90ee90ad !important;
         }
 
+        .legal-move-attack {
+            background: #ecee90ad !important;
+        }
+
+        .legal-move-kill {
+            background: #ff8977ad !important;
+        }
+
         #timer {
             width: 75vw;
             height: 20px;
@@ -229,8 +237,8 @@
     <div id="board-container">
         <div id="board"></div>
         <button onclick="console.log(JSON.stringify({board: bArray, turn: gTurn}));">Log Game</button>
-        <button onclick="window.localStorage.removeItem('boardState');">Delete Save</button>
-        
+        <button onclick="window.localStorage.removeItem('boardState'); window.location.reload();">Delete Save</button>
+
     </div>
 
     <script src="game.js"></script>
